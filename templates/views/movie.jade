@@ -1,0 +1,107 @@
+extends ../layouts/default
+
+block intro
+	.container
+		.col-sm-12
+			h1 电影
+			h4 2016-10-01以后发布的片源
+	
+block content
+	.container
+		// cate
+		//h1=filters.path
+		//h2=filters.url
+		.col-sm-2
+			.list-group(style='')
+				a(href='/movie', class=!filters.cate ? 'active' : false).list-group-item 全部
+				a(href='/movie/1', class=filters.cate==1 ? 'active' : false).list-group-item 评分好+片源清晰
+				a(href='/movie/2', class=filters.cate==2 ? 'active' : false).list-group-item 评分好+片源暂不清晰（不断更新）
+				a(href='/movie/3', class=filters.cate==3 ? 'active' : false).list-group-item 评分有待考证
+		.col-sm-offset-2.col-sm-6
+			form(action='/movie',method='post')
+				.input-group
+					input(type="text",class="form-control",name="search_word", value="")
+					span.input-group-btn.actions
+						button(class="btn btn-default", type="submit") 搜索
+		if data.movies.results.length
+			// movie list
+			.container.col-sm-10
+				// page head
+				.col-sm-12
+					if data.movies.totalPages > 1
+						h4.text-weight-normal
+							|  搜到  
+							strong #{data.movies.total}
+							|  部电影，当前页为第 
+							strong #{data.movies.first}
+							|  部到第 
+							strong #{data.movies.last}
+							|  部
+							
+					else
+						h4.text-weight-normal 
+							| 搜到 
+							strong #{data.movies.results.length} 
+							| 部电影
+				// movie part
+				.movie-list.col-sm-12
+					each movie in data.movies.results
+						.row.movie-info
+							.col-sm-2.col-sm-offset-0.col-xs-6.col-xs-offset-3
+								img(src=movie.pic_url).img-rounded
+							.col-sm-10.col-xs-12
+								h4= movie.name+'——'+movie.show_year
+								.pull-left
+									b='豆瓣评分：'+movie.grade
+									span &nbsp;&nbsp;&nbsp;&nbsp;
+									b="评分人数："+movie.audience_num
+								.pull-right
+									case movie.is_hd
+										when 0
+											b.red 暂无清晰片源
+										when 1
+											b.red 清晰片源
+								p.clear
+									//html
+									!="<b>剧情简介</b><br>"+movie.desc+"<br><b>演员阵容</b><br>"+movie.staff
+								p
+									if movie.is_good==0
+										b.red 建议：电影评分有待考证，暂不推荐。
+									else if movie.is_good==1
+										if movie.is_hd==1
+											b.red 建议：该电影评分较好，且有清晰片源，推荐下载观看。
+										else
+											b.red 建议：该电影评分较好，但尚无清晰片源，可根据自身需求下载观看。
+									else
+										b.red 建议：评分较低，可根据自身需求下载观看。
+								.pull-left
+									a(href=movie.douban_url,target="_blank") 豆瓣地址
+									span &nbsp;&nbsp;&nbsp;&nbsp;
+									a(href=movie.download_page_url,target="_blank") 下载地址（请确保本机有迅雷下载工具）
+								.pull-right.text-muted= "资源发布日期："+movie._.publish_date.format('YYYY-MM-DD')
+
+			
+			// page tail
+			if data.movies.totalPages > 1
+				.col-sm-8.col-sm-offset-4
+					ul.pagination(style="")
+
+						- var theUrl=filters.path+"?";
+						- if(filters.search_word) {
+						- 	theUrl=filters.path+"?search_word="+filters.search_word+"&"
+						- }
+						
+						if data.movies.previous
+							li: a(href=theUrl+'page=' + data.movies.previous ): span.glyphicon.glyphicon-chevron-left
+						else
+							li.disabled: a(href=theUrl+'page=' + 1): span.glyphicon.glyphicon-chevron-left
+						each p, i in data.movies.pages
+							li(class=data.movies.currentPage == p ? 'active' : null)
+								a(href=theUrl+'page=' + (p == '...' ? (i ? data.movies.totalPages : 1) : p ) )= p
+						if data.movies.next
+							li: a(href=theUrl+'page=' + data.movies.next): span.glyphicon.glyphicon-chevron-right
+						else
+							li.disabled: a(href=theUrl+'page=' + data.movies.totalPages): span.entypo.glyphicon.glyphicon-chevron-right
+		else
+			h3.col-sm-6.col-sm-offset-3.text-muted 未搜到相关电影。
+

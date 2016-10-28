@@ -1,0 +1,15 @@
+extends ../../layouts/default
+
+block intro
+	.container
+		h1 Ticket
+	
+block content
+	.container
+		if data.tickets.length
+			each ticket in data.tickets
+				h2: a(href='/ticket/' + ticket.slug)= ticket.title
+					if ticket.createdAt
+						.pull-right.text-muted= ticket._.createdAt.format('Do MMM YYYY')
+		else
+			h3.text-muted There are no ticket yet.

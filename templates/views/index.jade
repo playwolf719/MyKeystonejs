@@ -1,0 +1,22 @@
+extends ../layouts/default
+
+block content
+	.container: .jumbotron.col-sm-12
+		// img(src='/images/logo.svg', width='160')
+		h1 欢迎来到我的空间
+		hr
+		if user && user.canAccessKeystone
+			// p
+				// a(href='/keystone').btn.btn-lg.btn-primary Open the Admin UI
+		else
+			//- p We have created a default Admin user for you with the email <strong>249583905@qq.com</strong> and the password <strong>admin</strong>.
+			// p
+				// a(href='/keystone/signin', style='margin-right: 10px').btn.btn-lg.btn-primary Sign in
+		h2 空间内容
+		ul
+			li 
+				a(href='/movie') BT天堂片源+豆瓣评分定时爬取
+			li 
+				a(href='/weibo') 微博爬取（进行中）
+			li 
+				a(href='/friendcircle') 朋友圈爬取（进行中）
