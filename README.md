@@ -2,4 +2,6 @@
 
 ## 简介
 - keystonejs是一款数据库驱动的基于Express和MongoDB的node框架。keystonejs可以被理解成是一款cms。keystonejs之于nodejs，等同于wordpress之于php。
-- keystonejs-demo是本人为了学习nodejs而搭建的基于keystonejs的demo。鉴于keystonejs API文档尚不完善，一些功能的实现需要参考官方demo代码进行学习。本代码里包含了分页，分类，简单搜索等基本功能，供大家参考，有好的建议欢迎提出。
+- keystonejs-demo是本人为了学习nodejs而搭建的基于keystonejs的demo。
+- 鉴于keystonejs API文档尚不完善，一些功能的实现需要参考官方demo代码进行学习。本代码里包含了分页，分类，简单搜索等基本功能，供大家参考。
+- 另外，大家有好的建议欢迎提出。（邮箱：playwolf719@163.com）
